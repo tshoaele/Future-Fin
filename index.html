@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>FUTURE·FIN</title>
+  <!-- Rajdhani font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Rajdhani', sans-serif;
+    }
+
+    /* theme variables */
+    :root {
+      --bg: #0b0f17;
+      --panel: rgba(18, 26, 40, 0.85);
+      --glass: rgba(10, 20, 30, 0.6);
+      --border: rgba(0, 255, 200, 0.25);
+      --text: #e3f2fd;
+      --text-dim: #90a4ae;
+      --accent: #00e5ff;
+      --accent-glow: 0 0 12px rgba(0, 229, 255, 0.6);
+      --income: #00e676;
+      --expense: #ff5252;
+      --shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+    }
+
+    .light-theme {
+      --bg: #eef2f6;
+      --panel: rgba(255, 255, 255, 0.85);
+      --glass: rgba(240, 248, 255, 0.7);
+      --border: rgba(0, 120, 150, 0.3);
+      --text: #0a1a2a;
+      --text-dim: #3e5a6a;
+      --accent: #0077b6;
+      --accent-glow: 0 0 10px rgba(0, 119, 182, 0.4);
+      --income: #0d8a4a;
+      --expense: #c62828;
+      --shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      overflow: hidden; /* no scrolling */
+      transition: background 0.3s, color 0.3s;
+      color: var(--text);
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+    }
+
+    /* main app card – fit one screen */
+    .app {
+      width: 100%;
+      max-width: 1300px;
+      height: 100%;
+      max-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--panel);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 32px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: 14px 18px;
+      transition: background 0.3s, border 0.3s;
+    }
+
+    /* header row */
+    .header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .month-display {
+      font-weight: 600;
+      font-size: 1.6rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, var(--accent), #a0f0ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: var(--accent-glow);
+    }
+
+    .theme-toggle {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 1.3rem;
+      padding: 6px 16px;
+      border-radius: 40px;
+      cursor: pointer;
+      font-weight: 500;
+      letter-spacing: 1px;
+      transition: all 0.2s;
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .theme-toggle:hover {
+      background: var(--glass);
+      border-color: var(--accent);
+      box-shadow: var(--accent-glow);
+    }
+
+    /* two columns layout */
+    .columns {
+      display: flex;
+      flex: 1;
+      gap: 16px;
+      min-height: 0;
+      padding: 12px 0 6px;
+    }
+
+    .col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--glass);
+      border-radius: 24px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      backdrop-filter: blur(8px);
+      overflow: hidden;
+    }
+
+    .col-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--accent);
+      margin-bottom: 10px;
+      text-shadow: var(--accent-glow);
+      border-left: 4px solid var(--accent);
+      padding-left: 10px;
+    }
+
+    /* income block */
+    .income-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      background: rgba(0, 200, 200, 0.05);
+      padding: 8px 10px;
+      border-radius: 14px;
+      border: 1px solid transparent;
+      transition: border 0.2s;
+    }
+
+    .income-item:hover {
+      border-color: var(--border);
+    }
+
+    .income-label {
+      font-weight: 500;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      font-size: 0.95rem;
+      text-transform: uppercase;
+    }
+
+    .income-value {
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: var(--income);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .currency {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    input[type="number"] {
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-weight: 700;
+      font-size: 1.3rem;
+      font-family: 'Rajdhani', sans-serif;
+      text-align: right;
+      width: 110px;
+      padding: 4px 6px;
+      border-radius: 10px;
+      outline: none;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+
+    input[type="number"]:focus {
+      border-color: var(--accent);
+      background: rgba(0, 229, 255, 0.1);
+      box-shadow: var(--accent-glow);
+    }
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+
+    /* salary is locked (readonly) */
+    .locked-input {
+      background: rgba(0, 200, 200, 0.1);
+      border: 1px solid var(--border);
+      color: var(--income);
+      font-weight: 700;
+      cursor: not-allowed;
+      width: 130px;
+    }
+
+    /* expenses list */
+    .expenses-list {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent) transparent;
+    }
+
+    .expenses-list::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .expenses-list::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .expenses-list::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 8px;
+    }
+
+    .expense-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 82, 82, 0.05);
+      border-radius: 14px;
+      padding: 6px 10px;
+      border: 1px solid transparent;
+      transition: border 0.2s;
+      flex-shrink: 0;
+    }
+
+    .expense-item:hover {
+      border-color: var(--expense);
+    }
+
+    .expense-name {
+      font-weight: 500;
+      color: var(--text-dim);
+      letter-spacing: 1px;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      flex: 1;
+    }
+
+    .expense-input {
+      width: 120px;
+      font-size: 1.2rem;
+      color: var(--expense);
+      font-weight: 700;
+    }
+
+    /* total balance row */
+    .balance-bar {
+      margin-top: 8px;
+      padding: 14px 20px;
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.15), rgba(0, 230, 118, 0.1));
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(8px);
+      flex-shrink: 0;
+    }
+
+    .balance-label {
+      font-size: 1.3rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-shadow: var(--accent-glow);
+    }
+
+    .balance-amount {
+      font-size: 2.4rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, var(--income), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+      line-height: 1;
+    }
+
+    .negative-balance {
+      background: linear-gradient(135deg, #ff5252, #ff8a80);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* small utils */
+    .currency-symbol {
+      font-size: 0.9rem;
+      opacity: 0.7;
+      margin-right: 2px;
+    }
+
+    .flex-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* add some futuristic grid lines */
+    .app::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(0, 229, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      border-radius: 32px;
+      z-index: -1;
+    }
+
+    /* make sure everything fits on one screen */
+    @media (max-height: 700px) {
+      .app { padding: 8px 12px; }
+      .month-display { font-size: 1.2rem; }
+      .col { padding: 8px 10px; }
+      .income-value, input[type="number"] { font-size: 1.1rem; }
+      .balance-amount { font-size: 1.8rem; }
+      .expense-input { font-size: 1rem; width: 100px; }
+      .locked-input { width: 110px; }
+    }
+
+    @media (max-width: 700px) {
+      .columns { flex-direction: column; gap: 8px; }
+      .col { padding: 8px; }
+      .balance-amount { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app" id="app">
+    <!-- Header with month and theme toggle -->
+    <div class="header">
+      <div class="month-display" id="monthDisplay">SEPTEMBER 2026</div>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span>🌙</span> DARK
+      </button>
+    </div>
+
+    <!-- Two columns -->
+    <div class="columns">
+      <!-- INCOME COLUMN -->
+      <div class="col">
+        <div class="col-title">INCOME</div>
+
+        <!-- Locked salary -->
+        <div class="income-item">
+          <span class="income-label">SALARY</span>
+          <div class="flex-row">
+            <span class="currency">R</span>
+            <input type="number" id="salaryInput" class="locked-input" value="14000" readonly step="100" min="0">
+          </div>
+        </div>
+
+        <!-- Editable allowance / other income -->
+        <div class="income-item">
+          <span class="income-label">ALLOWANCE</span>
+          <div class="flex-row">
+            <span class="currency">R</span>
+            <input type="number" id="allowanceInput" value="0" step="50" min="0" placeholder="0">
+          </div>
+        </div>
+
+        <!-- extra space for alignment, but no scroll -->
+        <div style="flex:1;"></div>
+      </div>
+
+      <!-- EXPENSES COLUMN -->
+      <div class="col">
+        <div class="col-title">EXPENSES</div>
+        <div class="expenses-list" id="expensesList">
+          <!-- expense items will be populated by JS, but static fallback is here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- TOTAL BALANCE -->
+    <div class="balance-bar">
+      <span class="balance-label">TOTAL BALANCE</span>
+      <span class="balance-amount" id="totalBalance">R 0</span>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // --- CONFIG ---
+      const MONTHS = [
+        { name: 'SEPTEMBER 2026', year: 2026, month: 8 }, // September (0-indexed)
+        { name: 'OCTOBER 2026', year: 2026, month: 9 }
+      ];
+      
+      // For demo: we start with September 2026 (index 0). We'll store data per month.
+      // Data structure: monthIndex -> { allowance, expenses: [{name, amount}] }
+      const defaultExpenses = [
+        { name: 'RENT', amount: 3500 },
+        { name: 'TRANSPORT', amount: 1200 },
+        { name: 'FOOD', amount: 2500 },
+        { name: 'UTILITIES', amount: 800 },
+        { name: 'DATA', amount: 500 },
+        { name: 'SAVINGS', amount: 1000 }
+      ];
+
+      // State
+      let currentMonthIndex = 0; // 0 = Sept 2026, 1 = Oct 2026
+      let monthlyData = {
+        0: { allowance: 0, expenses: JSON.parse(JSON.stringify(defaultExpenses)) },
+        1: { allowance: 0, expenses: JSON.parse(JSON.stringify(defaultExpenses)) }
+      };
+
+      // DOM elements
+      const monthDisplay = document.getElementById('monthDisplay');
+      const themeToggle = document.getElementById('themeToggle');
+      const salaryInput = document.getElementById('salaryInput');
+      const allowanceInput = document.getElementById('allowanceInput');
+      const expensesList = document.getElementById('expensesList');
+      const totalBalanceEl = document.getElementById('totalBalance');
+      const app = document.getElementById('app');
+
+      // --- Helpers ---
+      function formatCurrency(value) {
+        return 'R ' + value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+      }
+
+      // Calculate total expenses for current month
+      function getTotalExpenses() {
+        const data = monthlyData[currentMonthIndex];
+        return data.expenses.reduce((sum, exp) => sum + (Number(exp.amount) || 0), 0);
+      }
+
+      // Calculate total income (salary + allowance)
+      function getTotalIncome() {
+        const salary = 14000; // locked
+        const allowance = monthlyData[currentMonthIndex].allowance || 0;
+        return salary + allowance;
+      }
+
+      // Update total balance display
+      function updateTotalBalance() {
+        const income = getTotalIncome();
+        const expenses = getTotalExpenses();
+        const balance = income - expenses;
+        
+        totalBalanceEl.textContent = formatCurrency(balance);
+        
+        // Add negative class if balance < 0
+        if (balance < 0) {
+          totalBalanceEl.classList.add('negative-balance');
+        } else {
+          totalBalanceEl.classList.remove('negative-balance');
+        }
+      }
+
+      // Render expenses list for current month
+      function renderExpenses() {
+        const data = monthlyData[currentMonthIndex];
+        expensesList.innerHTML = '';
+        
+        data.expenses.forEach((expense, index) => {
+          const item = document.createElement('div');
+          item.className = 'expense-item';
+          
+          const nameSpan = document.createElement('span');
+          nameSpan.className = 'expense-name';
+          nameSpan.textContent = expense.name;
+          
+          const inputWrapper = document.createElement('div');
+          inputWrapper.className = 'flex-row';
+          
+          const currencySpan = document.createElement('span');
+          currencySpan.className = 'currency';
+          currencySpan.textContent = 'R';
+          
+          const input = document.createElement('input');
+          input.type = 'number';
+          input.className = 'expense-input';
+          input.value = expense.amount;
+          input.step = '10';
+          input.min = '0';
+          input.dataset.index = index;
+          
+          // Update amount on change
+          input.addEventListener('input', (e) => {
+            const idx = Number(e.target.dataset.index);
+            const newVal = parseFloat(e.target.value) || 0;
+            monthlyData[currentMonthIndex].expenses[idx].amount = newVal;
+            updateTotalBalance();
+          });
+          
+          inputWrapper.appendChild(currencySpan);
+          inputWrapper.appendChild(input);
+          
+          item.appendChild(nameSpan);
+          item.appendChild(inputWrapper);
+          
+          expensesList.appendChild(item);
+        });
+      }
+
+      // Update allowance input based on current month
+      function updateAllowanceInput() {
+        const allowance = monthlyData[currentMonthIndex].allowance || 0;
+        allowanceInput.value = allowance;
+      }
+
+      // Update month display
+      function updateMonthDisplay() {
+        monthDisplay.textContent = MONTHS[currentMonthIndex].name;
+      }
+
+      // Full refresh of UI for current month
+      function refreshUI() {
+        updateMonthDisplay();
+        updateAllowanceInput();
+        renderExpenses();
+        updateTotalBalance();
+      }
+
+      // Switch month (for future use, but we only have two months)
+      // For demo, we'll add a double-click on month display to cycle (sept/oct)
+      monthDisplay.addEventListener('dblclick', () => {
+        currentMonthIndex = (currentMonthIndex + 1) % MONTHS.length;
+        refreshUI();
+      });
+
+      // Allowance input change
+      allowanceInput.addEventListener('input', (e) => {
+        const val = parseFloat(e.target.value) || 0;
+        monthlyData[currentMonthIndex].allowance = val;
+        updateTotalBalance();
+      });
+
+      // Theme toggle
+      themeToggle.addEventListener('click', () => {
+        const isLight = document.body.classList.toggle('light-theme');
+        themeToggle.innerHTML = isLight ? '<span>☀️</span> LIGHT' : '<span>🌙</span> DARK';
+      });
+
+      // Initialize with September 2026 (index 0)
+      // Set default allowance for September to 0
+      monthlyData[0].allowance = 0;
+      
+      // Ensure expenses have numeric values
+      monthlyData[0].expenses = defaultExpenses.map(e => ({ ...e, amount: Number(e.amount) }));
+      monthlyData[1].expenses = JSON.parse(JSON.stringify(defaultExpenses));
+      
+      // Render everything
+      refreshUI();
+
+      // Make salary input extra locked (no change possible)
+      salaryInput.addEventListener('keydown', (e) => e.preventDefault());
+      salaryInput.addEventListener('wheel', (e) => e.preventDefault());
+
+      // Simple PWA-ish: add service worker if supported (optional, just for demonstration)
+      if ('serviceWorker' in navigator) {
+        // Not registering actual SW because it requires separate file, but we keep PWA readiness.
+        console.log('PWA ready: add manifest & service worker for full PWA');
+      }
+
+      // Fix input width for mobile
+      window.addEventListener('resize', () => {
+        // Just re-render if needed, but it's fine.
+      });
+    })();
+  </script>
+</body>
+</html>

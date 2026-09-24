@@ -39,28 +39,19 @@
   }
 
   html,body {
-    height:100%;
-    background:var(--bg);
-    color:var(--text);
-    overflow:hidden;
-    transition:background .3s,color .3s;
+    height:100%; background:var(--bg); color:var(--text);
+    overflow:hidden; transition:background .3s,color .3s;
   }
-  body {
-    display:flex; align-items:center; justify-content:center;
-    padding:6px;
-  }
+  body { display:flex; align-items:center; justify-content:center; padding:6px; }
 
   .app {
     position:relative;
     width:100%; max-width:1300px; height:100%; max-height:100vh;
     display:flex; flex-direction:column;
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:26px;
-    box-shadow:var(--shadow);
+    background:var(--panel); border:1px solid var(--border);
+    border-radius:26px; box-shadow:var(--shadow);
     padding:10px 14px;
-    backdrop-filter:blur(12px);
-    -webkit-backdrop-filter:blur(12px);
+    backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
     transition:background .3s,border .3s;
   }
   .app::before {
@@ -68,20 +59,16 @@
     background-image:
       linear-gradient(rgba(0,229,255,.025) 1px,transparent 1px),
       linear-gradient(90deg,rgba(0,229,255,.025) 1px,transparent 1px);
-    background-size:36px 36px;
-    border-radius:26px;
-    pointer-events:none;
+    background-size:36px 36px; border-radius:26px; pointer-events:none;
   }
 
-  /* ---------- HEADER ---------- */
+  /* HEADER */
   .header {
     display:flex; align-items:center; justify-content:space-between;
     padding-bottom:6px; border-bottom:1px solid var(--border);
     flex-shrink:0; gap:10px;
   }
-  .month-nav {
-    display:flex; align-items:center; gap:8px;
-  }
+  .month-nav { display:flex; align-items:center; gap:8px; }
   .nav-btn {
     background:transparent; border:1px solid var(--border);
     color:var(--accent); font-family:'Rajdhani',sans-serif;
@@ -90,11 +77,7 @@
     cursor:pointer; display:flex; align-items:center; justify-content:center;
     transition:all .2s;
   }
-  .nav-btn:hover {
-    background:var(--glass);
-    box-shadow:var(--accent-glow);
-    border-color:var(--accent);
-  }
+  .nav-btn:hover { background:var(--glass); box-shadow:var(--accent-glow); border-color:var(--accent); }
   .nav-btn:disabled { opacity:.25; cursor:not-allowed; box-shadow:none; }
 
   .month-display {
@@ -102,8 +85,7 @@
     text-transform:uppercase;
     background:linear-gradient(135deg,var(--accent),#a0f0ff);
     -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-    background-clip:text;
-    text-shadow:var(--accent-glow);
+    background-clip:text; text-shadow:var(--accent-glow);
     min-width:180px; text-align:center;
   }
   .theme-toggle {
@@ -111,61 +93,68 @@
     color:var(--text); font-family:'Rajdhani',sans-serif;
     font-size:.95rem; font-weight:600; letter-spacing:1px;
     padding:5px 14px; border-radius:40px; cursor:pointer;
-    display:flex; align-items:center; gap:6px;
-    transition:all .2s;
+    display:flex; align-items:center; gap:6px; transition:all .2s;
   }
-  .theme-toggle:hover {
-    background:var(--glass); border-color:var(--accent);
-    box-shadow:var(--accent-glow);
-  }
+  .theme-toggle:hover { background:var(--glass); border-color:var(--accent); box-shadow:var(--accent-glow); }
 
-  /* ---------- COLUMNS ---------- */
-  .columns {
-    display:flex; flex:1; gap:12px; min-height:0;
-    padding:8px 0 6px;
-  }
+  /* COLUMNS */
+  .columns { display:flex; flex:1; gap:12px; min-height:0; padding:8px 0 6px; }
   .col {
     flex:1; display:flex; flex-direction:column;
-    background:var(--glass);
-    border:1px solid var(--border);
-    border-radius:18px;
-    padding:10px 12px;
-    min-height:0;
+    background:var(--glass); border:1px solid var(--border);
+    border-radius:18px; padding:10px 12px; min-height:0;
     backdrop-filter:blur(8px);
+  }
+  .col-head {
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:8px; flex-shrink:0;
   }
   .col-title {
     font-size:1rem; font-weight:700; letter-spacing:3px;
     text-transform:uppercase; color:var(--accent);
     text-shadow:var(--accent-glow);
     border-left:3px solid var(--accent);
-    padding-left:8px; margin-bottom:8px;
-    flex-shrink:0;
+    padding-left:8px;
   }
+  .add-btn {
+    background:transparent; border:1px solid var(--border);
+    color:var(--accent); font-family:'Rajdhani',sans-serif;
+    font-weight:700; font-size:1rem; line-height:1;
+    width:26px; height:26px; border-radius:50%;
+    cursor:pointer; display:flex; align-items:center; justify-content:center;
+    transition:all .2s;
+  }
+  .add-btn:hover { background:var(--glass); box-shadow:var(--accent-glow); border-color:var(--accent); }
 
-  /* ---------- INCOME ---------- */
+  /* INCOME */
+  .income-list { display:flex; flex-direction:column; gap:6px; min-height:0; overflow-y:auto; padding-right:2px; }
   .income-item {
     display:flex; align-items:center; justify-content:space-between;
     background:rgba(0,200,200,.05);
-    padding:6px 10px; border-radius:10px;
-    border:1px solid transparent;
-    margin-bottom:8px;
-    transition:border .2s;
+    padding:4px 10px; border-radius:10px;
+    border:1px solid transparent; transition:border .2s;
+    flex-shrink:0;
   }
   .income-item:hover { border-color:var(--border); }
   .income-label {
     font-weight:600; letter-spacing:1.5px;
     color:var(--text-dim); font-size:.85rem;
-    text-transform:uppercase;
+    text-transform:uppercase; flex:1;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    cursor:text;
+  }
+  .income-label[contenteditable="true"]:focus {
+    outline:none; color:var(--accent);
+    border-bottom:1px solid var(--accent);
   }
   .flex-row { display:flex; align-items:center; gap:4px; }
   .currency { font-size:.85rem; opacity:.7; }
-  .income-value, .expense-input, .locked-input {
+  .income-value, .locked-input, .expense-input {
     background:transparent; border:none; outline:none;
     color:var(--text); font-family:'Rajdhani',sans-serif;
     font-weight:700; text-align:right;
     padding:2px 6px; border-radius:8px;
-    border:1px solid transparent;
-    transition:all .2s;
+    border:1px solid transparent; transition:all .2s;
   }
   .locked-input {
     color:var(--income); font-size:1.15rem; width:110px;
@@ -174,51 +163,50 @@
     cursor:not-allowed;
   }
   .income-value { font-size:1.15rem; width:110px; color:var(--income); }
-  .income-value:focus {
-    border-color:var(--accent);
-    background:rgba(0,229,255,.1);
-    box-shadow:var(--accent-glow);
-  }
+  .income-value:focus { border-color:var(--accent); background:rgba(0,229,255,.1); box-shadow:var(--accent-glow); }
   input[type=number]::-webkit-outer-spin-button,
   input[type=number]::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
   input[type=number] { -moz-appearance:textfield; }
+  .del-btn {
+    background:transparent; border:none; color:var(--text-dim);
+    font-size:1rem; cursor:pointer; padding:0 4px; line-height:1;
+    transition:color .2s;
+  }
+  .del-btn:hover { color:var(--expense); }
 
-  /* ---------- EXPENSES ---------- */
+  /* EXPENSES */
   .expenses-list {
     flex:1; display:flex; flex-direction:column; gap:4px;
-    min-height:0; overflow:hidden;
+    min-height:0; overflow-y:auto; padding-right:2px;
   }
   .expense-item {
     display:flex; align-items:center; justify-content:space-between;
     background:rgba(255,82,82,.05);
     border:1px solid transparent;
-    border-radius:10px;
-    padding:2px 10px;
-    flex:1; min-height:0;
-    transition:border .2s;
+    border-radius:10px; padding:2px 8px;
+    flex-shrink:0; transition:border .2s;
   }
   .expense-item:hover { border-color:var(--expense); }
   .expense-name {
     font-weight:600; color:var(--text-dim);
-    letter-spacing:1px; font-size:.82rem;
+    letter-spacing:1px; font-size:.85rem;
     text-transform:uppercase;
     flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    cursor:text; padding-right:6px;
   }
-  .expense-input {
-    width:100px; font-size:1.05rem; color:var(--expense);
+  .expense-name[contenteditable="true"]:focus {
+    outline:none; color:var(--expense);
+    border-bottom:1px solid var(--expense);
   }
-  .expense-input:focus {
-    border-color:var(--expense);
-    background:rgba(255,82,82,.1);
-  }
+  .expense-input { width:100px; font-size:1.05rem; color:var(--expense); }
+  .expense-input:focus { border-color:var(--expense); background:rgba(255,82,82,.1); }
   .expense-input::placeholder { color:var(--text-dim); opacity:.4; }
 
-  /* ---------- BALANCE ---------- */
+  /* BALANCE */
   .balance-bar {
     margin-top:6px; padding:10px 20px;
     background:linear-gradient(135deg,rgba(0,229,255,.15),rgba(0,230,118,.08));
-    border:1px solid var(--border);
-    border-radius:20px;
+    border:1px solid var(--border); border-radius:20px;
     display:flex; align-items:center; justify-content:space-between;
     flex-shrink:0;
   }
@@ -231,8 +219,7 @@
     font-size:2rem; font-weight:700; letter-spacing:1.5px; line-height:1;
     background:linear-gradient(135deg,var(--income),var(--accent));
     -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-    background-clip:text;
-    text-shadow:0 0 18px rgba(0,229,255,.35);
+    background-clip:text; text-shadow:0 0 18px rgba(0,229,255,.35);
   }
   .balance-amount.negative {
     background:linear-gradient(135deg,#ff5252,#ff8a80);
@@ -240,16 +227,24 @@
     background-clip:text;
   }
 
-  /* ---------- COMPRESS ON SHORT SCREENS ---------- */
+  /* scrollbars */
+  .expenses-list::-webkit-scrollbar,
+  .income-list::-webkit-scrollbar { width:4px; }
+  .expenses-list::-webkit-scrollbar-thumb,
+  .income-list::-webkit-scrollbar-thumb { background:var(--accent); border-radius:8px; }
+  .expenses-list::-webkit-scrollbar-track,
+  .income-list::-webkit-scrollbar-track { background:transparent; }
+
+  /* COMPRESS */
   @media (max-height:760px) {
     .app { padding:8px 12px; }
     .month-display { font-size:1.15rem; min-width:150px; }
     .col { padding:8px 10px; }
-    .col-title { font-size:.85rem; margin-bottom:6px; }
-    .income-item { padding:4px 8px; margin-bottom:6px; }
+    .col-title { font-size:.85rem; }
+    .income-item { padding:2px 8px; }
     .income-label { font-size:.75rem; }
     .income-value, .locked-input { font-size:1rem; width:95px; }
-    .expense-item { padding:1px 8px; }
+    .expense-item { padding:1px 6px; }
     .expense-name { font-size:.72rem; }
     .expense-input { font-size:.95rem; width:85px; }
     .balance-bar { padding:8px 16px; }
@@ -259,19 +254,19 @@
   @media (max-height:620px) {
     .month-display { font-size:1rem; min-width:130px; letter-spacing:1px; }
     .col-title { font-size:.75rem; letter-spacing:2px; }
-    .income-item { padding:2px 6px; margin-bottom:4px; }
+    .income-item { padding:1px 6px; }
     .income-label { font-size:.7rem; }
     .income-value, .locked-input { font-size:.9rem; width:85px; }
-    .expense-item { padding:0 6px; }
+    .expense-item { padding:0 4px; }
     .expense-name { font-size:.66rem; }
     .expense-input { font-size:.85rem; width:75px; }
     .balance-amount { font-size:1.4rem; }
   }
-
   @media (max-width:720px) {
     .columns { flex-direction:column; gap:8px; }
     .month-display { font-size:1rem; min-width:120px; }
     .nav-btn { width:26px; height:26px; font-size:.95rem; }
+    .add-btn { width:22px; height:22px; font-size:.9rem; }
   }
 </style>
 </head>
@@ -293,28 +288,29 @@
 
     <!-- INCOME -->
     <div class="col">
-      <div class="col-title">INCOME</div>
-
-      <div class="income-item">
-        <span class="income-label">SALARY</span>
-        <div class="flex-row">
-          <span class="currency">R</span>
-          <input type="number" class="locked-input" id="salaryInput" value="14000" readonly>
-        </div>
+      <div class="col-head">
+        <div class="col-title">INCOME</div>
+        <button class="add-btn" id="addIncome" title="Add income source">+</button>
       </div>
-
-      <div class="income-item">
-        <span class="income-label">ALLOWANCE</span>
-        <div class="flex-row">
-          <span class="currency">R</span>
-          <input type="number" class="income-value" id="allowanceInput" placeholder="0" inputmode="decimal">
+      <div class="income-list" id="incomeList">
+        <!-- Salary: locked, not deletable, not renamable -->
+        <div class="income-item" data-fixed="salary">
+          <span class="income-label">SALARY</span>
+          <div class="flex-row">
+            <span class="currency">R</span>
+            <input type="number" class="locked-input" id="salaryInput" value="14000" readonly>
+          </div>
         </div>
+        <!-- Custom income rows + allowance appended by JS -->
       </div>
     </div>
 
     <!-- EXPENSES -->
     <div class="col">
-      <div class="col-title">EXPENSES</div>
+      <div class="col-head">
+        <div class="col-title">EXPENSES</div>
+        <button class="add-btn" id="addExpense" title="Add expense">+</button>
+      </div>
       <div class="expenses-list" id="expensesList"></div>
     </div>
   </div>
@@ -332,7 +328,7 @@
 
   /* ---------- CONFIG ---------- */
   const SALARY = 14000;
-  const EXPENSE_NAMES = [
+  const DEFAULT_EXPENSES = [
     'Lendplus','Crediwise','Primeloans','Sphiweloans','Janeloans',
     'The Dawn','Electricity','Levies','Transport','Payjustnow due','Payjustnow new'
   ];
@@ -341,58 +337,138 @@
     { label:'OCTOBER 2026',   key:'2026-10' }
   ];
 
-  /* ---------- STATE ---------- */
-  // Each month gets its own independent store.
-  // amounts stored as strings so we can preserve blank ('') for cleared fields.
-  const store = {};
-  MONTHS.forEach(m => {
-    store[m.key] = {
-      allowance: '',
-      expenses: EXPENSE_NAMES.reduce((acc,n)=>{ acc[n]=''; return acc; },{})
-    };
-  });
+  /* ---------- STATE ----------
+     Structure is shared between months for item names, but amounts
+     are stored per-month. Each month has:
+       income: [ {id, name, amount} , ... ]   // custom income rows only (allowance is one of them)
+       expenses: [ {id, name, amount} , ... ] // all expense rows
+  */
+  const layout = {
+    incomes: [
+      { id:'allowance', name:'ALLOWANCE' }
+    ],
+    expenses: DEFAULT_EXPENSES.map(n => ({ id:uid(), name:n }))
+  };
 
-  let currentIndex = 0; // 0 = Sept 2026
+  // per-month amounts keyed by item id
+  const amounts = {};
+  MONTHS.forEach(m => { amounts[m.key] = { income:{}, expense:{} }; });
+
+  let currentIndex = 0;
+  function currentKey(){ return MONTHS[currentIndex].key; }
+  function curAmounts(){ return amounts[currentKey()]; }
 
   /* ---------- DOM ---------- */
-  const monthDisplay  = document.getElementById('monthDisplay');
-  const prevBtn       = document.getElementById('prevMonth');
-  const nextBtn       = document.getElementById('nextMonth');
-  const themeToggle   = document.getElementById('themeToggle');
-  const allowanceInput= document.getElementById('allowanceInput');
-  const expensesList  = document.getElementById('expensesList');
-  const totalBalanceEl= document.getElementById('totalBalance');
+  const monthDisplay   = document.getElementById('monthDisplay');
+  const prevBtn        = document.getElementById('prevMonth');
+  const nextBtn        = document.getElementById('nextMonth');
+  const themeToggle    = document.getElementById('themeToggle');
+  const incomeList     = document.getElementById('incomeList');
+  const expensesList   = document.getElementById('expensesList');
+  const addIncomeBtn   = document.getElementById('addIncome');
+  const addExpenseBtn  = document.getElementById('addExpense');
+  const totalBalanceEl = document.getElementById('totalBalance');
 
   /* ---------- HELPERS ---------- */
+  function uid(){ return 'x' + Math.random().toString(36).slice(2,9); }
   function num(v){ const n = parseFloat(v); return isNaN(n) ? 0 : n; }
   function fmt(v){ return 'R ' + v.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,' '); }
 
-  function currentStore(){ return store[MONTHS[currentIndex].key]; }
-
-  function calcTotalExpenses(){
-    const s = currentStore();
-    return EXPENSE_NAMES.reduce((sum,n)=> sum + num(s.expenses[n]), 0);
+  function totalIncome(){
+    let sum = SALARY;
+    layout.incomes.forEach(it => sum += num(curAmounts().income[it.id]));
+    return sum;
   }
-  function calcTotalIncome(){
-    return SALARY + num(currentStore().allowance);
+  function totalExpenses(){
+    return layout.expenses.reduce((s,it)=> s + num(curAmounts().expense[it.id]), 0);
   }
   function updateBalance(){
-    const bal = calcTotalIncome() - calcTotalExpenses();
+    const bal = totalIncome() - totalExpenses();
     totalBalanceEl.textContent = fmt(bal);
     totalBalanceEl.classList.toggle('negative', bal < 0);
   }
 
-  /* ---------- RENDER EXPENSES ---------- */
+  /* ---------- INCOME RENDER ---------- */
+  function renderIncomes(){
+    // Remove previously rendered custom income rows (keep the salary row)
+    [...incomeList.querySelectorAll('.income-item:not([data-fixed="salary"])')]
+      .forEach(el => el.remove());
+
+    layout.incomes.forEach(it => {
+      const row = document.createElement('div');
+      row.className = 'income-item';
+
+      const label = document.createElement('span');
+      label.className = 'income-label';
+      label.textContent = it.name;
+      label.title = 'Click to rename';
+      label.contentEditable = 'true';
+      label.spellcheck = false;
+      label.addEventListener('blur', () => {
+        const v = label.textContent.trim() || 'INCOME';
+        it.name = v.toUpperCase();
+        label.textContent = it.name;
+      });
+      label.addEventListener('keydown', e => { if(e.key==='Enter'){ e.preventDefault(); label.blur(); } });
+
+      const wrap = document.createElement('div');
+      wrap.className = 'flex-row';
+
+      const cur = document.createElement('span');
+      cur.className = 'currency';
+      cur.textContent = 'R';
+
+      const input = document.createElement('input');
+      input.type = 'number';
+      input.className = 'income-value';
+      input.inputMode = 'decimal';
+      input.placeholder = '0';
+      input.value = curAmounts().income[it.id] ?? '';
+      input.addEventListener('input', e => {
+        curAmounts().income[it.id] = e.target.value;
+        updateBalance();
+      });
+
+      const del = document.createElement('button');
+      del.className = 'del-btn';
+      del.title = 'Remove';
+      del.textContent = '×';
+      del.addEventListener('click', () => {
+        layout.incomes = layout.incomes.filter(x => x.id !== it.id);
+        MONTHS.forEach(m => { delete amounts[m.key].income[it.id]; });
+        renderIncomes();
+        updateBalance();
+      });
+
+      wrap.appendChild(cur);
+      wrap.appendChild(input);
+      wrap.appendChild(del);
+
+      row.appendChild(label);
+      row.appendChild(wrap);
+      incomeList.appendChild(row);
+    });
+  }
+
+  /* ---------- EXPENSES RENDER ---------- */
   function renderExpenses(){
-    const s = currentStore();
     expensesList.innerHTML = '';
-    EXPENSE_NAMES.forEach(name=>{
-      const item = document.createElement('div');
-      item.className = 'expense-item';
+    layout.expenses.forEach(it => {
+      const row = document.createElement('div');
+      row.className = 'expense-item';
 
       const label = document.createElement('span');
       label.className = 'expense-name';
-      label.textContent = name;
+      label.textContent = it.name;
+      label.title = 'Click to rename';
+      label.contentEditable = 'true';
+      label.spellcheck = false;
+      label.addEventListener('blur', () => {
+        const v = label.textContent.trim() || 'EXPENSE';
+        it.name = v.toUpperCase();
+        label.textContent = it.name;
+      });
+      label.addEventListener('keydown', e => { if(e.key==='Enter'){ e.preventDefault(); label.blur(); } });
 
       const wrap = document.createElement('div');
       wrap.className = 'flex-row';
@@ -406,57 +482,78 @@
       input.className = 'expense-input';
       input.inputMode = 'decimal';
       input.placeholder = '0';
-      input.value = s.expenses[name];
-      input.dataset.name = name;
+      input.value = curAmounts().expense[it.id] ?? '';
+      input.addEventListener('input', e => {
+        curAmounts().expense[it.id] = e.target.value;
+        updateBalance();
+      });
 
-      // allow blank / clear — store raw string
-      input.addEventListener('input', (e)=>{
-        const v = e.target.value;
-        s.expenses[name] = v;
+      const del = document.createElement('button');
+      del.className = 'del-btn';
+      del.title = 'Remove';
+      del.textContent = '×';
+      del.addEventListener('click', () => {
+        layout.expenses = layout.expenses.filter(x => x.id !== it.id);
+        MONTHS.forEach(m => { delete amounts[m.key].expense[it.id]; });
+        renderExpenses();
         updateBalance();
       });
 
       wrap.appendChild(cur);
       wrap.appendChild(input);
-      item.appendChild(label);
-      item.appendChild(wrap);
-      expensesList.appendChild(item);
+      wrap.appendChild(del);
+
+      row.appendChild(label);
+      row.appendChild(wrap);
+      expensesList.appendChild(row);
     });
   }
 
-  /* ---------- RENDER ALL ---------- */
-  function renderMonth(){
+  /* ---------- FULL RENDER ---------- */
+  function renderAll(){
     monthDisplay.textContent = MONTHS[currentIndex].label;
     prevBtn.disabled = currentIndex === 0;
     nextBtn.disabled = currentIndex === MONTHS.length - 1;
-
-    const s = currentStore();
-    allowanceInput.value = s.allowance;
-
+    renderIncomes();
     renderExpenses();
     updateBalance();
   }
 
-  /* ---------- EVENTS ---------- */
-  allowanceInput.addEventListener('input', (e)=>{
-    currentStore().allowance = e.target.value;
+  /* ---------- ADD ---------- */
+  addIncomeBtn.addEventListener('click', () => {
+    const it = { id:uid(), name:'NEW INCOME' };
+    layout.incomes.push(it);
+    MONTHS.forEach(m => { amounts[m.key].income[it.id] = ''; });
+    renderIncomes();
     updateBalance();
+    // focus the newly added row's name
+    const rows = incomeList.querySelectorAll('.income-item:not([data-fixed="salary"]) .income-label');
+    const last = rows[rows.length-1];
+    if(last){ last.focus(); document.execCommand && document.execCommand('selectAll', false, null); }
   });
 
-  prevBtn.addEventListener('click', ()=>{
-    if(currentIndex > 0){ currentIndex--; renderMonth(); }
-  });
-  nextBtn.addEventListener('click', ()=>{
-    if(currentIndex < MONTHS.length-1){ currentIndex++; renderMonth(); }
+  addExpenseBtn.addEventListener('click', () => {
+    const it = { id:uid(), name:'NEW EXPENSE' };
+    layout.expenses.push(it);
+    MONTHS.forEach(m => { amounts[m.key].expense[it.id] = ''; });
+    renderExpenses();
+    updateBalance();
+    const labels = expensesList.querySelectorAll('.expense-name');
+    const last = labels[labels.length-1];
+    if(last){ last.focus(); document.execCommand && document.execCommand('selectAll', false, null); }
   });
 
-  themeToggle.addEventListener('click', ()=>{
+  /* ---------- NAV / THEME ---------- */
+  prevBtn.addEventListener('click', () => { if(currentIndex>0){ currentIndex--; renderAll(); } });
+  nextBtn.addEventListener('click', () => { if(currentIndex<MONTHS.length-1){ currentIndex++; renderAll(); } });
+
+  themeToggle.addEventListener('click', () => {
     const light = document.body.classList.toggle('light-theme');
     themeToggle.innerHTML = light ? '<span>☀️</span> LIGHT' : '<span>🌙</span> DARK';
   });
 
   /* ---------- INIT ---------- */
-  renderMonth();
+  renderAll();
 })();
 </script>
 </body>

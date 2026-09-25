@@ -293,7 +293,6 @@
         <button class="add-btn" id="addIncome" title="Add income source">+</button>
       </div>
       <div class="income-list" id="incomeList">
-        <!-- Salary: locked, not deletable, not renamable -->
         <div class="income-item" data-fixed="salary">
           <span class="income-label">SALARY</span>
           <div class="flex-row">
@@ -301,7 +300,6 @@
             <input type="number" class="locked-input" id="salaryInput" value="14000" readonly>
           </div>
         </div>
-        <!-- Custom income rows + allowance appended by JS -->
       </div>
     </div>
 
@@ -328,31 +326,46 @@
 
   /* ---------- CONFIG ---------- */
   const SALARY = 14000;
+
+  // Default expense rows with their DEFAULT amounts (strings, so we can blank them)
   const DEFAULT_EXPENSES = [
-    'Lendplus','Crediwise','Primeloans','Sphiweloans','Janeloans',
-    'The Dawn','Electricity','Levies','Transport','Payjustnow due','Payjustnow new'
+    { name:'Lendplus',        amount:'' },
+    { name:'Crediwise',       amount:'' },
+    { name:'Primeloans',      amount:'' },
+    { name:'Sphiweloans',     amount:'' },
+    { name:'Janeloans',       amount:'' },
+    { name:'The Dawn',        amount:'' },
+    { name:'Electricity',     amount:'' },
+    { name:'Levies',          amount:'' },
+    { name:'Transport',       amount:'' },
+    { name:'Payjustnow due',  amount:'' },
+    { name:'Payjustnow new',  amount:'' },
+    { name:'MPowa Finance',   amount:'1883' },
+    { name:'Atlas Finance',   amount:'3200' }
   ];
+
   const MONTHS = [
     { label:'SEPTEMBER 2026', key:'2026-09' },
     { label:'OCTOBER 2026',   key:'2026-10' }
   ];
 
-  /* ---------- STATE ----------
-     Structure is shared between months for item names, but amounts
-     are stored per-month. Each month has:
-       income: [ {id, name, amount} , ... ]   // custom income rows only (allowance is one of them)
-       expenses: [ {id, name, amount} , ... ] // all expense rows
-  */
+  /* ---------- STATE ---------- */
   const layout = {
-    incomes: [
-      { id:'allowance', name:'ALLOWANCE' }
-    ],
-    expenses: DEFAULT_EXPENSES.map(n => ({ id:uid(), name:n }))
+    incomes: [ { id:'allowance', name:'ALLOWANCE' } ],
+    expenses: DEFAULT_EXPENSES.map(e => ({ id:uid(), name:e.name }))
   };
 
   // per-month amounts keyed by item id
   const amounts = {};
-  MONTHS.forEach(m => { amounts[m.key] = { income:{}, expense:{} }; });
+  MONTHS.forEach((m, idx) => {
+    amounts[m.key] = { income:{}, expense:{} };
+    // allowance defaults to blank both months
+    amounts[m.key].income['allowance'] = '';
+    // pre-fill default expense amounts (MPowa 1883, Atlas 3200, rest blank) for both months
+    layout.expenses.forEach((row, i) => {
+      amounts[m.key].expense[row.id] = DEFAULT_EXPENSES[i].amount;
+    });
+  });
 
   let currentIndex = 0;
   function currentKey(){ return MONTHS[currentIndex].key; }
@@ -390,7 +403,6 @@
 
   /* ---------- INCOME RENDER ---------- */
   function renderIncomes(){
-    // Remove previously rendered custom income rows (keep the salary row)
     [...incomeList.querySelectorAll('.income-item:not([data-fixed="salary"])')]
       .forEach(el => el.remove());
 
@@ -526,7 +538,6 @@
     MONTHS.forEach(m => { amounts[m.key].income[it.id] = ''; });
     renderIncomes();
     updateBalance();
-    // focus the newly added row's name
     const rows = incomeList.querySelectorAll('.income-item:not([data-fixed="salary"]) .income-label');
     const last = rows[rows.length-1];
     if(last){ last.focus(); document.execCommand && document.execCommand('selectAll', false, null); }

@@ -126,81 +126,112 @@
   }
   .add-btn:hover { background:var(--glass); box-shadow:var(--accent-glow); border-color:var(--accent); }
 
-  /* INCOME */
-  .income-list { display:flex; flex-direction:column; gap:6px; min-height:0; overflow-y:auto; padding-right:2px; }
-  .income-item {
-    display:flex; align-items:center; justify-content:space-between;
-    background:rgba(0,200,200,.05);
-    padding:4px 10px; border-radius:10px;
-    border:1px solid transparent; transition:border .2s;
+  /* ============ SHARED ROW GRID (aligns income + expenses) ============ */
+  /* Each row is a grid: [name] [R symbol] [amount input] [delete slot]      */
+  /* Fixed-width amount + delete columns so the input's right edge never     */
+  /* shifts, no matter how long the name is or whether the × is present.    */
+  .row {
+    display:grid;
+    grid-template-columns: 1fr 14px 110px 22px;
+    align-items:center;
+    column-gap:4px;
+    padding:4px 10px;
+    border-radius:10px;
+    border:1px solid transparent;
+    transition:border .2s;
     flex-shrink:0;
   }
+
+  /* INCOME ROWS */
+  .income-item {
+    background:rgba(0,200,200,.05);
+  }
   .income-item:hover { border-color:var(--border); }
-  .income-label {
-    font-weight:600; letter-spacing:1.5px;
-    color:var(--text-dim); font-size:.85rem;
-    text-transform:uppercase; flex:1;
+
+  /* EXPENSE ROWS */
+  .expense-item {
+    background:rgba(255,82,82,.05);
+    padding:2px 8px;
+    row-gap:0;
+  }
+  .expense-item:hover { border-color:var(--expense); }
+
+  /* name */
+  .name {
+    font-weight:600; letter-spacing:1px; font-size:.85rem;
+    text-transform:uppercase;
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     cursor:text;
   }
-  .income-label[contenteditable="true"]:focus {
-    outline:none; color:var(--accent);
-    border-bottom:1px solid var(--accent);
+  .income-item .name { color:var(--text-dim); letter-spacing:1.5px; }
+  .expense-item .name { color:var(--text-dim); }
+  .name[contenteditable="true"]:focus { outline:none; }
+  .income-item .name[contenteditable="true"]:focus {
+    color:var(--accent); border-bottom:1px solid var(--accent);
   }
-  .flex-row { display:flex; align-items:center; gap:4px; }
-  .currency { font-size:.85rem; opacity:.7; }
-  .income-value, .locked-input, .expense-input {
+  .expense-item .name[contenteditable="true"]:focus {
+    color:var(--expense); border-bottom:1px solid var(--expense);
+  }
+
+  /* currency symbol */
+  .currency {
+    font-size:.85rem; opacity:.7;
+    text-align:right;
+  }
+
+  /* shared input styles */
+  .amount-input {
     background:transparent; border:none; outline:none;
     color:var(--text); font-family:'Rajdhani',sans-serif;
     font-weight:700; text-align:right;
     padding:2px 6px; border-radius:8px;
     border:1px solid transparent; transition:all .2s;
+    width:100%;
+    min-width:0;
   }
+  input[type=number]::-webkit-outer-spin-button,
+  input[type=number]::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
+  input[type=number] { -moz-appearance:textfield; }
+
+  .income-value { font-size:1.15rem; color:var(--income); }
+  .income-value:focus { border-color:var(--accent); background:rgba(0,229,255,.1); box-shadow:var(--accent-glow); }
+
   .locked-input {
-    color:var(--income); font-size:1.15rem; width:110px;
+    color:var(--income); font-size:1.15rem;
     background:rgba(0,200,200,.1);
     border:1px solid var(--border);
     cursor:not-allowed;
   }
-  .income-value { font-size:1.15rem; width:110px; color:var(--income); }
-  .income-value:focus { border-color:var(--accent); background:rgba(0,229,255,.1); box-shadow:var(--accent-glow); }
-  input[type=number]::-webkit-outer-spin-button,
-  input[type=number]::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
-  input[type=number] { -moz-appearance:textfield; }
+
+  .expense-input { font-size:1.05rem; color:var(--expense); }
+  .expense-input:focus { border-color:var(--expense); background:rgba(255,82,82,.1); }
+  .expense-input::placeholder { color:var(--text-dim); opacity:.4; }
+  .income-value::placeholder { color:var(--text-dim); opacity:.4; }
+
+  /* delete button — always occupies its slot, invisible when not applicable */
+  .del-slot { display:flex; align-items:center; justify-content:center; }
   .del-btn {
     background:transparent; border:none; color:var(--text-dim);
     font-size:1rem; cursor:pointer; padding:0 4px; line-height:1;
     transition:color .2s;
   }
   .del-btn:hover { color:var(--expense); }
+  .del-btn.hidden { visibility:hidden; pointer-events:none; }
 
-  /* EXPENSES */
-  .expenses-list {
-    flex:1; display:flex; flex-direction:column; gap:4px;
+  /* scroll areas */
+  .income-list, .expenses-list {
+    flex:1; display:flex; flex-direction:column; gap:6px;
     min-height:0; overflow-y:auto; padding-right:2px;
   }
-  .expense-item {
-    display:flex; align-items:center; justify-content:space-between;
-    background:rgba(255,82,82,.05);
-    border:1px solid transparent;
-    border-radius:10px; padding:2px 8px;
-    flex-shrink:0; transition:border .2s;
-  }
-  .expense-item:hover { border-color:var(--expense); }
-  .expense-name {
-    font-weight:600; color:var(--text-dim);
-    letter-spacing:1px; font-size:.85rem;
-    text-transform:uppercase;
-    flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    cursor:text; padding-right:6px;
-  }
-  .expense-name[contenteditable="true"]:focus {
-    outline:none; color:var(--expense);
-    border-bottom:1px solid var(--expense);
-  }
-  .expense-input { width:100px; font-size:1.05rem; color:var(--expense); }
-  .expense-input:focus { border-color:var(--expense); background:rgba(255,82,82,.1); }
-  .expense-input::placeholder { color:var(--text-dim); opacity:.4; }
+  .expenses-list { gap:4px; }
+
+  /* scrollbars */
+  .expenses-list::-webkit-scrollbar,
+  .income-list::-webkit-scrollbar { width:4px; }
+  .expenses-list::-webkit-scrollbar-thumb,
+  .income-list::-webkit-scrollbar-thumb { background:var(--accent); border-radius:8px; }
+  .expenses-list::-webkit-scrollbar-track,
+  .income-list::-webkit-scrollbar-track { background:transparent; }
 
   /* BALANCE */
   .balance-bar {
@@ -227,26 +258,17 @@
     background-clip:text;
   }
 
-  /* scrollbars */
-  .expenses-list::-webkit-scrollbar,
-  .income-list::-webkit-scrollbar { width:4px; }
-  .expenses-list::-webkit-scrollbar-thumb,
-  .income-list::-webkit-scrollbar-thumb { background:var(--accent); border-radius:8px; }
-  .expenses-list::-webkit-scrollbar-track,
-  .income-list::-webkit-scrollbar-track { background:transparent; }
-
   /* COMPRESS */
   @media (max-height:760px) {
     .app { padding:8px 12px; }
     .month-display { font-size:1.15rem; min-width:150px; }
     .col { padding:8px 10px; }
     .col-title { font-size:.85rem; }
-    .income-item { padding:2px 8px; }
-    .income-label { font-size:.75rem; }
-    .income-value, .locked-input { font-size:1rem; width:95px; }
+    .row { grid-template-columns: 1fr 12px 95px 20px; padding:2px 8px; }
+    .name { font-size:.75rem; }
+    .income-value, .locked-input { font-size:1rem; }
     .expense-item { padding:1px 6px; }
-    .expense-name { font-size:.72rem; }
-    .expense-input { font-size:.95rem; width:85px; }
+    .expense-input { font-size:.95rem; }
     .balance-bar { padding:8px 16px; }
     .balance-label { font-size:.95rem; letter-spacing:2px; }
     .balance-amount { font-size:1.6rem; }
@@ -254,12 +276,11 @@
   @media (max-height:620px) {
     .month-display { font-size:1rem; min-width:130px; letter-spacing:1px; }
     .col-title { font-size:.75rem; letter-spacing:2px; }
-    .income-item { padding:1px 6px; }
-    .income-label { font-size:.7rem; }
-    .income-value, .locked-input { font-size:.9rem; width:85px; }
+    .row { grid-template-columns: 1fr 11px 85px 18px; padding:1px 6px; column-gap:3px; }
+    .name { font-size:.7rem; }
+    .income-value, .locked-input { font-size:.9rem; }
     .expense-item { padding:0 4px; }
-    .expense-name { font-size:.66rem; }
-    .expense-input { font-size:.85rem; width:75px; }
+    .expense-input { font-size:.85rem; }
     .balance-amount { font-size:1.4rem; }
   }
   @media (max-width:720px) {
@@ -292,15 +313,7 @@
         <div class="col-title">INCOME</div>
         <button class="add-btn" id="addIncome" title="Add income source">+</button>
       </div>
-      <div class="income-list" id="incomeList">
-        <div class="income-item" data-fixed="salary">
-          <span class="income-label">SALARY</span>
-          <div class="flex-row">
-            <span class="currency">R</span>
-            <input type="number" class="locked-input" id="salaryInput" value="14000" readonly>
-          </div>
-        </div>
-      </div>
+      <div class="income-list" id="incomeList"></div>
     </div>
 
     <!-- EXPENSES -->
@@ -327,7 +340,15 @@
   /* ---------- CONFIG ---------- */
   const SALARY = 14000;
 
-  // Default expense rows with their DEFAULT amounts (strings, so we can blank them)
+  // Default income rows (Salary is fixed; the rest are user-editable)
+  // As per your instruction, extra income rows are kept.
+  const DEFAULT_INCOMES = [
+    { name:'ALLOWANCE',    amount:'' },
+    { name:'LENDPLUS',     amount:'' },
+    { name:'MPOWA',        amount:'' },
+    { name:'SPHIWELOANS',  amount:'' }
+  ];
+
   const DEFAULT_EXPENSES = [
     { name:'Lendplus',        amount:'' },
     { name:'Crediwise',       amount:'' },
@@ -351,17 +372,16 @@
 
   /* ---------- STATE ---------- */
   const layout = {
-    incomes: [ { id:'allowance', name:'ALLOWANCE' } ],
+    incomes: DEFAULT_INCOMES.map(i => ({ id:uid(), name:i.name })),
     expenses: DEFAULT_EXPENSES.map(e => ({ id:uid(), name:e.name }))
   };
 
-  // per-month amounts keyed by item id
   const amounts = {};
-  MONTHS.forEach((m, idx) => {
+  MONTHS.forEach((m) => {
     amounts[m.key] = { income:{}, expense:{} };
-    // allowance defaults to blank both months
-    amounts[m.key].income['allowance'] = '';
-    // pre-fill default expense amounts (MPowa 1883, Atlas 3200, rest blank) for both months
+    layout.incomes.forEach((row, i) => {
+      amounts[m.key].income[row.id] = DEFAULT_INCOMES[i].amount;
+    });
     layout.expenses.forEach((row, i) => {
       amounts[m.key].expense[row.id] = DEFAULT_EXPENSES[i].amount;
     });
@@ -401,64 +421,102 @@
     totalBalanceEl.classList.toggle('negative', bal < 0);
   }
 
-  /* ---------- INCOME RENDER ---------- */
-  function renderIncomes(){
-    [...incomeList.querySelectorAll('.income-item:not([data-fixed="salary"])')]
-      .forEach(el => el.remove());
+  /* ---------- BUILD A ROW ----------
+     Every row uses the SAME grid so the amount field always ends at the
+     same right edge. The delete slot is always reserved; the Salary row
+     has a hidden (invisible but space-reserved) delete button.
+  */
+  function buildRow(opts){
+    const { kind, name, amount, id, isLocked, showDelete, onNameChange, onAmountChange, onDelete } = opts;
 
-    layout.incomes.forEach(it => {
-      const row = document.createElement('div');
-      row.className = 'income-item';
+    const row = document.createElement('div');
+    row.className = 'row ' + (kind === 'income' ? 'income-item' : 'expense-item');
 
-      const label = document.createElement('span');
-      label.className = 'income-label';
-      label.textContent = it.name;
+    // name
+    const label = document.createElement('span');
+    label.className = 'name';
+    label.textContent = name;
+    if(!isLocked){
       label.title = 'Click to rename';
       label.contentEditable = 'true';
       label.spellcheck = false;
       label.addEventListener('blur', () => {
-        const v = label.textContent.trim() || 'INCOME';
-        it.name = v.toUpperCase();
-        label.textContent = it.name;
+        const v = label.textContent.trim() || (kind === 'income' ? 'INCOME' : 'EXPENSE');
+        label.textContent = v.toUpperCase();
+        onNameChange(v.toUpperCase());
       });
-      label.addEventListener('keydown', e => { if(e.key==='Enter'){ e.preventDefault(); label.blur(); } });
-
-      const wrap = document.createElement('div');
-      wrap.className = 'flex-row';
-
-      const cur = document.createElement('span');
-      cur.className = 'currency';
-      cur.textContent = 'R';
-
-      const input = document.createElement('input');
-      input.type = 'number';
-      input.className = 'income-value';
-      input.inputMode = 'decimal';
-      input.placeholder = '0';
-      input.value = curAmounts().income[it.id] ?? '';
-      input.addEventListener('input', e => {
-        curAmounts().income[it.id] = e.target.value;
-        updateBalance();
+      label.addEventListener('keydown', e => {
+        if(e.key === 'Enter'){ e.preventDefault(); label.blur(); }
       });
+    }
 
-      const del = document.createElement('button');
-      del.className = 'del-btn';
-      del.title = 'Remove';
-      del.textContent = '×';
-      del.addEventListener('click', () => {
-        layout.incomes = layout.incomes.filter(x => x.id !== it.id);
-        MONTHS.forEach(m => { delete amounts[m.key].income[it.id]; });
-        renderIncomes();
-        updateBalance();
-      });
+    // currency
+    const cur = document.createElement('span');
+    cur.className = 'currency';
+    cur.textContent = 'R';
 
-      wrap.appendChild(cur);
-      wrap.appendChild(input);
-      wrap.appendChild(del);
+    // amount input
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.className = 'amount-input ' + (kind === 'income' ? 'income-value' : 'expense-input');
+    if(isLocked) input.classList.add('locked-input');
+    input.inputMode = 'decimal';
+    input.placeholder = '0';
+    input.value = amount;
+    if(isLocked){ input.readOnly = true; }
+    else {
+      input.addEventListener('input', e => onAmountChange(e.target.value));
+    }
 
-      row.appendChild(label);
-      row.appendChild(wrap);
-      incomeList.appendChild(row);
+    // delete slot — always present; invisible when not applicable
+    const delSlot = document.createElement('div');
+    delSlot.className = 'del-slot';
+    const del = document.createElement('button');
+    del.className = 'del-btn' + (showDelete ? '' : ' hidden');
+    del.title = 'Remove';
+    del.textContent = '×';
+    if(showDelete) del.addEventListener('click', onDelete);
+    delSlot.appendChild(del);
+
+    row.appendChild(label);
+    row.appendChild(cur);
+    row.appendChild(input);
+    row.appendChild(delSlot);
+    return row;
+  }
+
+  /* ---------- INCOME RENDER ---------- */
+  function renderIncomes(){
+    incomeList.innerHTML = '';
+
+    // Fixed SALARY row first (locked, no delete)
+    incomeList.appendChild(buildRow({
+      kind:'income',
+      name:'SALARY',
+      amount:String(SALARY),
+      isLocked:true,
+      showDelete:false,
+      onNameChange:()=>{},
+      onAmountChange:()=>{},
+      onDelete:()=>{}
+    }));
+
+    // User income rows
+    layout.incomes.forEach(it => {
+      incomeList.appendChild(buildRow({
+        kind:'income',
+        name: it.name,
+        amount: curAmounts().income[it.id] ?? '',
+        isLocked:false,
+        showDelete:true,
+        onNameChange:(v)=>{ it.name = v; },
+        onAmountChange:(v)=>{ curAmounts().income[it.id] = v; updateBalance(); },
+        onDelete:()=>{
+          layout.incomes = layout.incomes.filter(x => x.id !== it.id);
+          MONTHS.forEach(m => { delete amounts[m.key].income[it.id]; });
+          renderIncomes(); updateBalance();
+        }
+      }));
     });
   }
 
@@ -466,58 +524,20 @@
   function renderExpenses(){
     expensesList.innerHTML = '';
     layout.expenses.forEach(it => {
-      const row = document.createElement('div');
-      row.className = 'expense-item';
-
-      const label = document.createElement('span');
-      label.className = 'expense-name';
-      label.textContent = it.name;
-      label.title = 'Click to rename';
-      label.contentEditable = 'true';
-      label.spellcheck = false;
-      label.addEventListener('blur', () => {
-        const v = label.textContent.trim() || 'EXPENSE';
-        it.name = v.toUpperCase();
-        label.textContent = it.name;
-      });
-      label.addEventListener('keydown', e => { if(e.key==='Enter'){ e.preventDefault(); label.blur(); } });
-
-      const wrap = document.createElement('div');
-      wrap.className = 'flex-row';
-
-      const cur = document.createElement('span');
-      cur.className = 'currency';
-      cur.textContent = 'R';
-
-      const input = document.createElement('input');
-      input.type = 'number';
-      input.className = 'expense-input';
-      input.inputMode = 'decimal';
-      input.placeholder = '0';
-      input.value = curAmounts().expense[it.id] ?? '';
-      input.addEventListener('input', e => {
-        curAmounts().expense[it.id] = e.target.value;
-        updateBalance();
-      });
-
-      const del = document.createElement('button');
-      del.className = 'del-btn';
-      del.title = 'Remove';
-      del.textContent = '×';
-      del.addEventListener('click', () => {
-        layout.expenses = layout.expenses.filter(x => x.id !== it.id);
-        MONTHS.forEach(m => { delete amounts[m.key].expense[it.id]; });
-        renderExpenses();
-        updateBalance();
-      });
-
-      wrap.appendChild(cur);
-      wrap.appendChild(input);
-      wrap.appendChild(del);
-
-      row.appendChild(label);
-      row.appendChild(wrap);
-      expensesList.appendChild(row);
+      expensesList.appendChild(buildRow({
+        kind:'expense',
+        name: it.name,
+        amount: curAmounts().expense[it.id] ?? '',
+        isLocked:false,
+        showDelete:true,
+        onNameChange:(v)=>{ it.name = v; },
+        onAmountChange:(v)=>{ curAmounts().expense[it.id] = v; updateBalance(); },
+        onDelete:()=>{
+          layout.expenses = layout.expenses.filter(x => x.id !== it.id);
+          MONTHS.forEach(m => { delete amounts[m.key].expense[it.id]; });
+          renderExpenses(); updateBalance();
+        }
+      }));
     });
   }
 
@@ -538,7 +558,7 @@
     MONTHS.forEach(m => { amounts[m.key].income[it.id] = ''; });
     renderIncomes();
     updateBalance();
-    const rows = incomeList.querySelectorAll('.income-item:not([data-fixed="salary"]) .income-label');
+    const rows = incomeList.querySelectorAll('.income-item .name');
     const last = rows[rows.length-1];
     if(last){ last.focus(); document.execCommand && document.execCommand('selectAll', false, null); }
   });
@@ -549,7 +569,7 @@
     MONTHS.forEach(m => { amounts[m.key].expense[it.id] = ''; });
     renderExpenses();
     updateBalance();
-    const labels = expensesList.querySelectorAll('.expense-name');
+    const labels = expensesList.querySelectorAll('.expense-name, .name');
     const last = labels[labels.length-1];
     if(last){ last.focus(); document.execCommand && document.execCommand('selectAll', false, null); }
   });
